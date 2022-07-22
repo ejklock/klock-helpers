@@ -8,10 +8,15 @@ use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
 
-abstract class BaseGeneratorCommand extends GeneratorCommand
+
+class BaseGeneratorCommand extends GeneratorCommand
 {
 
-    protected abstract function getStub();
+    protected function getStub()
+    {
+
+        return '';
+    }
 
     /**
      * Normaliza o path do arquivo "app/Domain/@NOME@/@TIPO@/@NOME_TIPO@

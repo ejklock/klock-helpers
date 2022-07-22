@@ -11,7 +11,6 @@ class BaseCommandsGeneratorsServiceProvider extends ServiceProvider
 {
 
     protected $commands = [
-
         DomainMakerCommand::class,
         ModelGeneratorCommand::class,
         ModelFromTableGeneratorCommand::class

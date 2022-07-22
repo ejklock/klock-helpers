@@ -8,6 +8,14 @@ use ReflectionMethod;
 
 class ModelFromTableGeneratorCommand extends BaseGeneratorCommand
 {
+    protected $name = 'domain:model-from-table';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create Model from table';
 
     protected function getStub()
     {
