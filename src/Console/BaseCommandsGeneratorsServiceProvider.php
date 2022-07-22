@@ -3,9 +3,10 @@
 namespace KlockTecnologia\KlockHelpers\Console;
 
 use Illuminate\Support\ServiceProvider;
-use KlockTecnologia\KlockHelpers\Commands\DomainMakerCommand;
+
 use KlockTecnologia\KlockHelpers\Console\Commands\ModelFromTableGeneratorCommand;
 use KlockTecnologia\KlockHelpers\Console\Commands\ModelGeneratorCommand;
+use KlockTecnologia\KlockHelpers\Console\Commands\DomainMakerCommand;
 
 class BaseCommandsGeneratorsServiceProvider extends ServiceProvider
 {
