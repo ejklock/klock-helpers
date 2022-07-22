@@ -1,0 +1,12 @@
+<?php
+// stubs/models.stub
+namespace {{ namespace }};
+ 
+use namespace KlockTecnologia\KlockHelpers\Models\BaseModelUUID;
+ 
+
+class {{ class }} extends BaseModelUUID
+{
+    
+    protected $fillable = [];
+}

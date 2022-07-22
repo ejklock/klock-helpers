@@ -1,0 +1,57 @@
+{
+    "name": "klocktecnologia/klock-helpers",
+    "description": "Laravel Helpers",
+    "keywords": [
+        "klocktecnologia",
+        "klock-helpers"
+    ],
+    "homepage": "https://github.com/klocktecnologia/klock-helpers",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Evaldo Klock",
+            "email": "evaldo@klocktecnologia.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "dyrynda/laravel-model-uuid": "^6.5",
+        "laravel/framework": "^8.0",
+        "illuminate/support": "^8.0"
+        
+    },
+    "require-dev": {
+        "krlove/eloquent-model-generator": "^1.3",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KlockTecnologia\\KlockHelpers\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KlockTecnologia\\KlockHelpers\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KlockTecnologia\\KlockHelpers\\KlockHelpersServiceProvider"
+            ],
+            "aliases": {
+                "KlockHelpers": "KlockTecnologia\\KlockHelpers\\KlockHelpersFacade"
+            }
+        }
+    }
+}

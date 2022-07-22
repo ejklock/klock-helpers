@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  app:
+    environment:
+      - COMPOSER_MEMORY_LIMIT=-1
+    image: ejklock/php-fpm:7.4
+    container_name: klockhelpers-dev
+    restart: unless-stopped
+    working_dir: /var/www/app
+    volumes:
+      - ./:/var/www/app
+    networks:
+      - klockhelpers
+
+networks:
+  klockhelpers:
+    driver: bridge
