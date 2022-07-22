@@ -3,7 +3,7 @@
 namespace KlockTecnologia\KlockHelpers;
 
 use Illuminate\Support\ServiceProvider;
-use KlockTecnologia\KlockHelpers\Commands\DomainMakerCommand;
+
 use KlockTecnologia\KlockHelpers\Console\BaseCommandsGeneratorsServiceProvider;
 
 class KlockHelpersServiceProvider extends ServiceProvider
@@ -44,7 +44,7 @@ class KlockHelpersServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            $this->commands([DomainMakerCommand::class]);
+            //$this->commands([DomainMakerCommand::class]);
         }
     }
 
