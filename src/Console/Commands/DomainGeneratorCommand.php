@@ -2,11 +2,11 @@
 
 namespace KlockTecnologia\KlockHelpers\Console\Commands;
 
-use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Support\Str;
 
-class DomainMakerCommand extends GeneratorCommand
+use Symfony\Component\Console\Input\InputOption;
+
+class DomainGeneratorCommand extends BaseGeneratorCommand
 {
     private $model, $baseNamespace;
     /**
