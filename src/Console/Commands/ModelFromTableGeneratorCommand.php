@@ -17,6 +17,12 @@ class ModelFromTableGeneratorCommand extends BaseGeneratorCommand
      */
     protected $description = 'Create Model from table';
 
+    public function stub()
+    {
+
+        return '';
+    }
+
     protected function getStub()
     {
         return null;

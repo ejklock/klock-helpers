@@ -53,9 +53,9 @@ class KlockHelpersServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->environment() == 'local') {
-            $this->app->register(BaseCommandsGeneratorsServiceProvider::class);
-        }
+
+        $this->app->register(BaseCommandsGeneratorsServiceProvider::class);
+
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'klock-helpers');
 
