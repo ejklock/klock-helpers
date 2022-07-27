@@ -1,10 +1,10 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Domains\CourseCategory\Models;
 
 use KlockTecnologia\KlockHelpers\Models\BaseModelUUID;
 
-class DummyClass extends BaseModelUUID
+class CourseCategory extends BaseModelUUID
 {
     protected $fillable = [];
 }

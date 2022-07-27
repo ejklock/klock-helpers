@@ -9,16 +9,11 @@ use Illuminate\Support\Str;
 class ModelGeneratorCommand extends GeneratorCommand
 {
 
-    private $model, $baseNamespace;
-
     protected $name = 'domain:model';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create Model';
+    protected $description = 'Create dry Model on App/Domain/<model>';
+
+    protected $type = 'model';
 
     protected function getStub()
     {
@@ -27,7 +22,7 @@ class ModelGeneratorCommand extends GeneratorCommand
 
     protected function getDefaultNamespace($rootNamespace)
     {
-        return is_dir(app_path('Models')) ? $rootNamespace . '\\Models' : $rootNamespace;
+        return "App\\Domains\\{$this->getCamelName()}\\Models";
     }
 
     protected function getCamelName()
@@ -35,14 +30,27 @@ class ModelGeneratorCommand extends GeneratorCommand
         return ucwords(Str::singular(Str::camel($this->argument('name'))));
     }
 
-    protected function getNamespace($name)
-    {
-        return trim("App\\Domains\\{$this->getCamelName()}\\Models");
-    }
-
-
     public function handle()
     {
-        dd($this->getNamespace(''));
+        parent::handle();
+    }
+
+    protected function getNameInput()
+    {
+        return $this->getCamelName();
+    }
+
+    protected function buildClass($name)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
+    }
+
+    protected function replaceClass($stub, $name)
+    {
+        $class = $this->getCamelName();
+
+        return str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
     }
 }
