@@ -1,0 +1,85 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Domains\DummyClass\Models\DummyClass;
+use App\Domains\DummyClass\Services\DummyClassService;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class DummyController extends Controller
+{
+    private ${{dummyServiceInstance}};
+
+    public function __construct({{dummyServiceClassType}} ${{dummyServiceInstance}})
+    {
+
+        $this->{{dummyServiceInstance}} = ${{dummyServiceInstance}};
+    }
+
+    public function index()
+    {
+
+        return view('dummy::index');
+    }
+
+    public function create()
+    {
+
+        return view('{{dummyDomainViewPath}}::create')->with(
+            [
+                'title' => 'DummyClass',
+                'useStatus' => true,
+                'actionName' => 'Criar',
+                'route' => 'admin.{{dummyDomainViewPath}}.store',
+                'rules' => []
+            ]
+        );
+    }
+
+    public function edit()
+    {
+
+        return view('{{dummyDomainViewPath}}::edit')->with(
+            [
+                'title' => 'DummyClass',
+                'useStatus' => true,
+                'actionName' => 'Criar',
+                'route' => 'admin.{{dummyDomainViewPath}}.update',
+                'rules' => []
+            ]
+        );
+    }
+
+    public function store(Request $req)
+    {
+        try {
+            $this->{{dummyServiceInstance}}->store($req->all());
+            return redirect()->route('admin.{{dummyDomainViewPath}}.index')->withFlashSuccess('Registro criado com sucesso');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withFlashDanger('Erro ao criar o registro');
+        }
+    }
+
+    public function update(DummyClass ${{classInstance}}, Request $req)
+    {
+
+        try {
+
+            $this->{{dummyServiceInstance}}->update($req->all(), ${{classInstance}}->id);
+            return redirect()->route('admin.{{dummyDomainViewPath}}.index')->withFlashSuccess('Registro atualizado com sucesso');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withFlashDanger('Erro ao atualizar o registro');
+        }
+    }
+
+    public function destroy(DummyClass ${{classInstance}})
+    {
+        try {
+            $this->dummyServiceInstance->delete(${{classInstance}}->id);
+            return redirect()->route('admin.{{dummyDomainViewPath}}.index')->withFlashSuccess('Registro removido com sucesso');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withFlashDanger('Falha ao remover o registro');
+        }
+    }
+}
