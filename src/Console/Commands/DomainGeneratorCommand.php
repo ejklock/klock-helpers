@@ -28,6 +28,11 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
         return '';
     }
 
+    protected function getCamelName()
+    {
+        return ucwords(Str::singular(Str::camel($this->argument('name'))));
+    }
+
     /**
      * Execute the console command.
      *
@@ -35,34 +40,29 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
      */
     public function handle()
     {
-        $this->model = $this->argument('name');
-        $this->baseNamespace = 'App/Domains/' . $this->argument('name');
-
-        if ($this->option('model')) {
-            $this->model = $this->option('model');
-        }
-
-        if (!$this->option('no-model')) {
-            $this->createModel();
-        }
-
-        if ($this->option('migration')) {
-            $this->createMigration();
-        }
-
-        if ($this->option('controller') || $this->option('resource')) {
-            $this->createController();
-        }
-
-        return 0;
+        $this->createModel();
+        $this->createController();
+        $this->createService();
     }
 
     protected function createModel()
     {
-        $modelNamespace = $this->baseNamespace . '/Models/';
+        $this->call('domain:model', [
+            'name' => $this->getCamelName()
+        ]);
+    }
 
-        $this->call('make:model', [
-            'name' => $modelNamespace . $this->model
+    protected function createController()
+    {
+        $this->call('domain:controller', [
+            'name' => $this->getCamelName()
+        ]);
+    }
+
+    protected function createService()
+    {
+        $this->call('domain:service', [
+            'name' => $this->getCamelName()
         ]);
     }
 
@@ -78,85 +78,6 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
             'name' => "create_{$table}_table",
             '--create' => $table,
         ]);
-    }
-
-    protected function createController()
-    {
-        $controllerNamespace = $this->baseNamespace . '/Http/Controllers/';
-        $controller = $controllerNamespace . 'Backend/' . Str::studly(class_basename($this->model));
-
-        $modelName = 'App/Domains/' . $this->argument('name') . '/Models/' . $this->model;
-
-        $this->call('make:controller', array_filter([
-            'name' => "{$controller}Controller",
-            '--model' => $this->option('resource') && $this->alreadyExists($modelName) ? $modelName : null,
-            '--resource' => $this->option('resource') && !$this->alreadyExists($modelName) ? true : null,
-        ]));
-
-        if ($this->option('frontend')) {
-            $frontendController = $controllerNamespace . 'Frontend/' . Str::studly(class_basename($this->model));
-
-            $this->call('make:controller', array_filter([
-                'name' => "{$frontendController}Controller",
-                '--model' => $this->option('resource') && $this->alreadyExists($modelName) ? $modelName : null,
-                '--resource' => $this->option('resource') && !$this->alreadyExists($modelName) ? true : null,
-            ]));
-        }
-    }
-
-    protected function getStub()
-    {
-        return $this->option('pivot')
-            ? $this->resolveStubPath('/stubs/model.pivot.stub')
-            : $this->resolveStubPath('/stubs/model.stub');
-    }
-
-    /**
-     * Get the destination class path.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function getPath($name)
-    {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-
-        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
-    }
-
-    /**
-     * Resolve the fully-qualified path to the stub.
-     *
-     * @param  string  $stub
-     * @return string
-     */
-    protected function resolveStubPath($stub)
-    {
-        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
-            ? $customPath
-            : __DIR__ . $stub;
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return is_dir(app_path('Models')) ? $rootNamespace . '\\Models' : $rootNamespace;
-    }
-
-    /**
-     * Determine if the class already exists.
-     *
-     * @param  string  $rawName
-     * @return bool
-     */
-    protected function alreadyExists($rawName)
-    {
-        return $this->files->exists($this->getPath($this->qualifyClass($rawName)));
     }
 
     protected function getOptions()

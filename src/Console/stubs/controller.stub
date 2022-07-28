@@ -7,7 +7,7 @@ use App\Domains\DummyClass\Services\DummyClassService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DummyController extends Controller
+class DummyClassController extends Controller
 {
     private ${{dummyServiceInstance}};
 
@@ -20,7 +20,7 @@ class DummyController extends Controller
     public function index()
     {
 
-        return view('dummy::index');
+        return view('{{dummyDomainViewPath}}::index');
     }
 
     public function create()
