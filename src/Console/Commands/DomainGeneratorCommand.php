@@ -40,9 +40,26 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
      */
     public function handle()
     {
-        $this->createModel();
+
+        $this->argument('dm') ? $this->createModel() : $this->createModelFromTable();
         $this->createController();
         $this->createService();
+    }
+
+    protected function getDomainNamespace()
+    {
+        return "App\\Domains\\{$this->getCamelName()}\\Models";
+    }
+
+    protected function createModelFromTable()
+    {
+
+        $this->call('krlove:generate:model', [
+            'class-name' => $this->getCamelName(),
+            'tn' => $this->argument('name'),
+            'ns' => $this->getDomainNamespace()
+
+        ]);
     }
 
     protected function createModel()
@@ -83,13 +100,7 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
     protected function getOptions()
     {
         return [
-            ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
-            ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
-            ['no-model', 'N', InputOption::VALUE_NONE, 'Create a domain without a model'],
-            ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
-            ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
-            ['frontend', 'f', InputOption::VALUE_NONE, 'Indicates if the generated controller should create a frontend controller'],
-            ['model', 'M', InputOption::VALUE_OPTIONAL, 'Create a new model on domain'],
+            ['dry-model', 'dm', InputOption::VALUE_NONE, 'Create a new Domain with drymodel (not from table)'],
         ];
     }
 }
