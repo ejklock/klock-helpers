@@ -3,8 +3,9 @@
 namespace KlockTecnologia\KlockHelpers\Models;
 
 use Dyrynda\Database\Support\GeneratesUuid;
+use Illuminate\Database\Eloquent\Model;
 
-class BaseModelUUID
+class BaseModelUUID extends Model
 {
     use GeneratesUuid;
 
