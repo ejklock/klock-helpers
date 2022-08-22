@@ -3,7 +3,7 @@
 namespace KlockTecnologia\KlockHelpers\Console\Commands;
 
 use Illuminate\Support\Str;
-
+use KlockTecnologia\KlockHelpers\Models\BaseModelUUID;
 use Symfony\Component\Console\Input\InputOption;
 
 class DomainGeneratorCommand extends BaseGeneratorCommand
@@ -15,6 +15,8 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
      * @var string
      */
     protected $name = 'domain:make';
+
+    protected $signature = 'domain:make {name} {--dm}';
 
     /**
      * The console command description.
@@ -40,8 +42,7 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
      */
     public function handle()
     {
-
-        $this->argument('dm') ? $this->createModel() : $this->createModelFromTable();
+        $this->option('dm') ? $this->createModel() : $this->createModelFromTable();
         $this->createController();
         $this->createService();
     }
@@ -51,13 +52,28 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
         return "App\\Domains\\{$this->getCamelName()}\\Models";
     }
 
+    protected function getOutputPath()
+    {
+        $separator = DIRECTORY_SEPARATOR === '\\' ? DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR : DIRECTORY_SEPARATOR; //Fix Windows
+        return (DIRECTORY_SEPARATOR === '\\' ? '' : '.') .
+            $separator .
+            'Domains' .
+            $separator .
+            $this->getCamelName() .
+            $separator .
+            'Models' .
+            $separator;
+    }
+
     protected function createModelFromTable()
     {
 
         $this->call('krlove:generate:model', [
             'class-name' => $this->getCamelName(),
-            'tn' => $this->argument('name'),
-            'ns' => $this->getDomainNamespace()
+            '--table-name' => $this->argument('name'),
+            '--base-class-name' => BaseModelUUID::class,
+            '--namespace' => $this->getDomainNamespace(),
+            '--output-path' => $this->getOutputPath()
 
         ]);
     }
@@ -100,7 +116,7 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
     protected function getOptions()
     {
         return [
-            ['dry-model', 'dm', InputOption::VALUE_NONE, 'Create a new Domain with drymodel (not from table)'],
+            ['dry-model', 'dm', InputOption::VALUE_OPTIONAL, 'Create a new Domain with drymodel (not from table)', null],
         ];
     }
 }

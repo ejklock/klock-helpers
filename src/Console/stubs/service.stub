@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use App\Domains\Dummy\Models\Dummy;
+use App\Domains\DummyClass\Models\DummyClass;
 use Illuminate\Database\Eloquent\Model;
 use KlockTecnologia\KlockHelpers\Services\AbstractModelService;
 
@@ -14,4 +14,3 @@ class DummyClassService extends AbstractModelService
 
         return new DummyClass();
     }
-}
