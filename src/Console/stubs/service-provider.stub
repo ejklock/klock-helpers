@@ -10,7 +10,6 @@ class DummyClassProvider extends ServiceProvider
 
     public function boot()
     {
-
         $this->registerConfig();
         $this->registerViews();
     }
@@ -22,7 +21,7 @@ class DummyClassProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        
     }
 
     /**
@@ -56,15 +55,10 @@ class DummyClassProvider extends ServiceProvider
             $sourcePath => $viewPath
         ], 'views');
 
-
-
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/Domains/DummyClass';
         }, \Config::get('view.paths')), [$sourcePath]), 'dummyclass_singular');
     }
-
-
-
 
     /**
      * Get the services provided by the provider.

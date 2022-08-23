@@ -39,9 +39,23 @@ class DomainConfigGenerator extends GeneratorCommand
         parent::handle();
     }
 
+    protected function str_lreplace($search, $replace, $subject)
+    {
+        $pos = strrpos($subject, $search);
+
+        if ($pos !== false) {
+            $subject = substr_replace($subject, $replace, $pos, strlen($search));
+        }
+
+        return $subject;
+    }
+
+
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $this->getLowerCaseSingularName());
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $name = $this->str_lreplace($this->getCamelName(), $this->getLowerCaseSingularName(), $name);
+
         return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
     }
 

@@ -41,7 +41,7 @@ class ServiceProviderGeneratorCommand extends GeneratorCommand
 
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name) . "Provider";
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name) . "ServiceProvider";
         return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
     }
 
@@ -63,7 +63,7 @@ class ServiceProviderGeneratorCommand extends GeneratorCommand
 
         $replacements = str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
 
-        $replacements = str_replace(['dummyclass_singular', '{{ dummyclass_singular }}', '{{dummyclass_singular}}'], $this->getLowerCaseSingularName(), $stub);
+        $replacements = str_replace(['dummyclass_singular', '{{ dummyclass_singular }}', '{{dummyclass_singular}}'], $this->getLowerCaseSingularName(), $replacements);
 
         return $replacements;
     }
