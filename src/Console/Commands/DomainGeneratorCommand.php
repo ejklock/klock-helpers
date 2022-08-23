@@ -45,6 +45,8 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
         $this->option('dm') ? $this->createModel() : $this->createModelFromTable();
         $this->createController();
         $this->createService();
+        $this->createConfig();
+        $this->createServiceProvider();
     }
 
     protected function getDomainNamespace()
@@ -95,6 +97,19 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
     protected function createService()
     {
         $this->call('domain:service', [
+            'name' => $this->getCamelName()
+        ]);
+    }
+
+    protected function createConfig()
+    {
+        $this->call('domain:config', [
+            'name' => $this->getCamelName()
+        ]);
+    }
+    protected function createServiceProvider()
+    {
+        $this->call('domain:service-provider', [
             'name' => $this->getCamelName()
         ]);
     }

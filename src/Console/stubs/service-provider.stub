@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Domains\DummyClass\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class DummyClassProvider extends ServiceProvider
+{
+    protected $defer = false;
+
+    public function boot()
+    {
+
+        $this->registerConfig();
+        $this->registerViews();
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Register config.
+     *
+     * @return void
+     */
+    protected function registerConfig()
+    {
+        $this->publishes([
+            __DIR__ . '/../Config/config.php' => config_path('dummyclass_singular.php'),
+        ], 'config');
+        $this->mergeConfigFrom(
+            __DIR__ . '/../Config/config.php',
+            'dummyclass_singular'
+        );
+    }
+
+    /**
+     * Register views.
+     *
+     * @return void
+     */
+    public function registerViews()
+    {
+        $viewPath = resource_path('views/domains/dummyclass_singular');
+
+        $sourcePath = __DIR__ . '/../Resources/views';
+
+        $this->publishes([
+            $sourcePath => $viewPath
+        ], 'views');
+
+
+
+        $this->loadViewsFrom(array_merge(array_map(function ($path) {
+            return $path . '/Domains/DummyClass';
+        }, \Config::get('view.paths')), [$sourcePath]), 'dummyclass_singular');
+    }
+
+
+
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [];
+    }
+}

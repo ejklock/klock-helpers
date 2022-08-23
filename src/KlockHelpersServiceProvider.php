@@ -5,6 +5,7 @@ namespace KlockTecnologia\KlockHelpers;
 use Illuminate\Support\ServiceProvider;
 
 use KlockTecnologia\KlockHelpers\Console\BaseCommandsGeneratorsServiceProvider;
+use KlockTecnologia\KlockHelpers\Providers\DomainsServiceProvider;
 
 class KlockHelpersServiceProvider extends ServiceProvider
 {
@@ -55,6 +56,8 @@ class KlockHelpersServiceProvider extends ServiceProvider
     {
 
         $this->app->register(BaseCommandsGeneratorsServiceProvider::class);
+
+        $this->app->register(DomainsServiceProvider::class);
 
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'klock-helpers');
