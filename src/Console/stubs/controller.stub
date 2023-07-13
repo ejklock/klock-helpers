@@ -76,7 +76,7 @@ class DummyClassController extends Controller
     public function destroy(DummyClass ${{classInstance}})
     {
         try {
-            $this->dummyServiceInstance->delete(${{classInstance}}->id);
+            $this->{{dummyServiceInstance}}->delete(${{classInstance}}->id);
             return redirect()->route('admin.{{dummyDomainViewPath}}.index')->withFlashSuccess('Registro removido com sucesso');
         } catch (\Throwable $th) {
             return redirect()->back()->withFlashDanger('Falha ao remover o registro');
