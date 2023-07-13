@@ -23,11 +23,14 @@ class DomainsServiceProvider extends ServiceProvider
                 $it->current()->getExtension() === 'php' &&
                 strpos($it->current()->getFilename(), 'Provider')
             ) {
-                require $it->key();
-
                 $providerPath = str_replace('/', '\\', $it->getSubpath()) . str_replace($it->getFileName(), '.php', '') . '\\' . preg_replace('/\\.[^.\\s]{3,4}$/', '', $it->getFileName());
 
-                $this->app->register("App\\Domains\\{$providerPath}");
+                $providerClass = "App\\Domains\\{$providerPath}";
+
+                if (!collect($this->app->getLoadedProviders())->has($providerClass)) {
+                    require $it->key();
+                    $this->app->register($providerClass);
+                }
             }
 
             $it->next();
