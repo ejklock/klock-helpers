@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0|'^8.1",
+        "php": "^7.3|^8.0|^8.1",
         "dyrynda/laravel-model-uuid": "^6.5",
         "laravel/framework": "^8.0|^9.0|^10.0",
         "illuminate/support": "^8.0|^9.0|^10.0"
