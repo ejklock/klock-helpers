@@ -4,6 +4,8 @@ namespace KlockTecnologia\KlockHelpers\Console;
 
 use Illuminate\Support\ServiceProvider;
 use KlockTecnologia\KlockHelpers\Console\Commands\ControllerGeneratorCommand;
+use KlockTecnologia\KlockHelpers\Console\Commands\CreateBladeCardCommand;
+use KlockTecnologia\KlockHelpers\Console\Commands\CreateBladeFormCommand;
 use KlockTecnologia\KlockHelpers\Console\Commands\DomainConfigGenerator;
 use KlockTecnologia\KlockHelpers\Console\Commands\DomainGeneratorCommand;
 use KlockTecnologia\KlockHelpers\Console\Commands\LivewireTableGeneratorCommand;
@@ -22,7 +24,9 @@ class BaseCommandsGeneratorsServiceProvider extends ServiceProvider
         ControllerGeneratorCommand::class,
         DomainConfigGenerator::class,
         ServiceProviderGeneratorCommand::class,
-        LivewireTableGeneratorCommand::class
+        LivewireTableGeneratorCommand::class,
+        CreateBladeFormCommand::class,
+        CreateBladeCardCommand::class
     ];
 
     /**

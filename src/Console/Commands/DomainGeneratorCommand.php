@@ -48,6 +48,8 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
         $this->createConfig();
         $this->createServiceProvider();
         $this->createDataTable();
+        $this->createBladeFormUtils();
+        $this->createBladeCardUtils();
     }
 
     protected function getDomainNamespace()
@@ -91,6 +93,19 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
     protected function createController()
     {
         $this->call('domain:controller', [
+            'name' => $this->getCamelName()
+        ]);
+    }
+
+    protected function createBladeFormUtils()
+    {
+        $this->call('utils:blade-forms', [
+            'name' => $this->getCamelName()
+        ]);
+    }
+    protected function createBladeCardUtils()
+    {
+        $this->call('utils:blade-card', [
             'name' => $this->getCamelName()
         ]);
     }
