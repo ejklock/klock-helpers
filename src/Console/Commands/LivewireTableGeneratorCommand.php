@@ -78,28 +78,16 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        \Log::info('Original Stub: ', ['stub' => $stub]);
-
         $stub = $this->replaceNamespace($stub, $name);
-        \Log::info('After replaceNamespace: ', ['stub' => $stub]);
-
-        $model = "App\\Domains\\" . $this->getCamelName() . "\\Models\\" . $this->getCamelName();
-        $columns = $this->getPropertiesFromModel($model);
-
-        // Adicionar uma quebra de linha antes e depois do array de colunas
-        $stub = str_replace('{{columns}}', "\n" . $columns . "\n\t\t", $stub);
 
         $stub = $this->replaceModel($stub, $this->getCamelName());
-        \Log::info('After replaceModel: ', ['stub' => $stub]);
 
         $stub = $this->replaceClass($stub, $this->getCamelName() . 'Table');
-        \Log::info('After replaceClass: ', ['stub' => $stub]);
+
+        $stub = $this->replaceRowView($stub, $this->getLowerCaseSingularName());
 
         return $stub;
     }
-
-
-
 
     protected function replaceModel($stub, $model)
     {
@@ -109,6 +97,11 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
     protected function replaceClass($stub, $name)
     {
         return str_replace(['DummyModelTable', 'DummyClass', '{{ class }}', '{{class}}'], $name, $stub);
+    }
+
+    protected function replaceRowView($stub, $name)
+    {
+        return str_replace('dummyclass_singular', $name, $stub);
     }
 
     protected function replaceColumns($stub, $model)
