@@ -4,8 +4,6 @@ namespace KlockTecnologia\KlockHelpers\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
-use ReflectionClass;
-use Illuminate\Database\Eloquent\Model;
 
 class LivewireTableGeneratorCommand extends GeneratorCommand
 {
@@ -49,17 +47,6 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
         parent::handle();
     }
 
-    protected function str_lreplace($search, $replace, $subject)
-    {
-        $pos = strrpos($subject, $search);
-
-        if ($pos !== false) {
-            $subject = substr_replace($subject, $replace, $pos, strlen($search));
-        }
-
-        return $subject;
-    }
-
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
@@ -68,10 +55,9 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
         return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
     }
 
-
     protected function getNameInput()
     {
-        return $this->getCamelName();
+        return $this->getCamelName() . 'Table';
     }
 
     protected function buildClass($name)
@@ -84,16 +70,14 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
 
         $stub = $this->replaceClass($stub, $this->getCamelName() . 'Table');
 
-        $stub = $this->replaceRowView($stub, $this->getLowerCaseSingularName());
-
         $modelClassName = "App\\Domains\\" . $this->getCamelName() . "\\Models\\" . $this->getCamelName();
         $columns = $this->getPropertiesFromModel($modelClassName);
         $stub = $this->replaceColumns($stub, $columns);
 
+        $stub = $this->replaceRowView($stub, $this->getLowerCaseSingularName());
+
         return $stub;
     }
-
-
 
     protected function replaceModel($stub, $model)
     {
@@ -110,32 +94,22 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
         return str_replace('dummyclass_singular', $name, $stub);
     }
 
-    protected function replaceColumns($stub, $model)
+    protected function replaceColumns($stub, $columns)
     {
-        $columns = $this->getPropertiesFromModel($model);
-        $columns = implode(",\n", $columns);
-
         return str_replace('{{columns}}', $columns, $stub);
     }
 
-    protected function replaceDummyClassSingular($stub, $name)
+    protected function getPropertiesFromModel($modelClassName)
     {
-        $name = strtolower($name);  // or use your custom logic to generate name
-
-        return str_replace('dummyclass_singular', $name, $stub);
-    }
-
-    protected function getPropertiesFromModel($model)
-    {
-        $modelInstance = new $model;
-        $fillableProperties = $modelInstance->getFillable();
+        $model = new $modelClassName;
+        $fillableProperties = $model->getFillable();
 
         $columns = [];
         foreach ($fillableProperties as $property) {
             $columns[] = "Column::make('{$property}')->sortable()->searchable()";
         }
 
-        // Adicionar indentação de duas tabulações a cada linha
+        // Add two tab indentations to each line
         $indentedColumns = array_map(function ($column) {
             return "\t\t" . $column;
         }, $columns);
