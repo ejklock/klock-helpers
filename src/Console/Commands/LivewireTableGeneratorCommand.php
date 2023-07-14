@@ -31,7 +31,7 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
 
     protected function getDefaultNamespace($rootNamespace)
     {
-        return "App\\Http\\Controllers\\Livewire";
+        return "App\\Http\\Livewire";
     }
 
     protected function getCamelName()
