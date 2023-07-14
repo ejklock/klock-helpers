@@ -47,6 +47,7 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
         $this->createService();
         $this->createConfig();
         $this->createServiceProvider();
+        $this->createDataTable();
     }
 
     protected function getDomainNamespace()
@@ -101,6 +102,12 @@ class DomainGeneratorCommand extends BaseGeneratorCommand
         ]);
     }
 
+    protected function createDataTable()
+    {
+        $this->call('domain:livewire-table', [
+            'name' => $this->getCamelName()
+        ]);
+    }
     protected function createConfig()
     {
         $this->call('domain:config', [

@@ -1,0 +1,27 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Domains\DummyModel\Models\DummyModel;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+
+class DummyModelTable extends DataTableComponent
+{
+    public function columns(): array
+    {
+        return [
+            {{columns}}
+        ];
+    }
+
+    public function query()
+    {
+        return DummyModel::query();
+    }
+
+    public function rowView(): string
+    {
+        return 'backend.dummyclass_singular.includes.row';
+    }
+}
