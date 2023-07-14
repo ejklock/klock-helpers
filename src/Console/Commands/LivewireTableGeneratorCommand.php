@@ -97,20 +97,21 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
         return str_replace('{{columns}}', $columns, $stub);
     }
 
-    protected function getPropertiesFromModel($modelClassName)
+    protected function getPropertiesFromModel($model)
     {
-        $model = new $modelClassName;
-        $fillableProperties = $model->getFillable();
+        $modelInstance = new $model;
+        $fillableProperties = $modelInstance->getFillable();
 
         $columns = [];
         foreach ($fillableProperties as $property) {
             $columns[] = "Column::make('{$property}')->sortable()->searchable()";
         }
 
-        // Add two tab indentations to each line
-        $indentedColumns = array_map(function ($column) {
-            return "\t\t" . $column;
-        }, $columns);
+        // Adicionar indentação de duas tabulações a cada linha
+        $indentedColumns = array_map(function ($column, $key) {
+            // Não adicionar espaços extras para o primeiro item
+            return $key === 0 ? $column : "\t\t" . $column;
+        }, $columns, array_keys($columns));
 
         return implode(",\n", $indentedColumns);
     }
