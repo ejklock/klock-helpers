@@ -50,16 +50,14 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        $name = Str::replaceLast($this->getCamelName(), $this->getCamelName() . 'Table', $name);
-
         return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
     }
+
 
     protected function getNameInput()
     {
         return $this->getCamelName() . 'Table';
     }
-
     protected function buildClass($name)
     {
         $stub = $this->files->get($this->getStub());
