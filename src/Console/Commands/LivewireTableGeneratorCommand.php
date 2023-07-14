@@ -86,8 +86,14 @@ class LivewireTableGeneratorCommand extends GeneratorCommand
 
         $stub = $this->replaceRowView($stub, $this->getLowerCaseSingularName());
 
+        $modelClassName = "App\\Domains\\" . $this->getCamelName() . "\\Models\\" . $this->getCamelName();
+        $columns = $this->getPropertiesFromModel($modelClassName);
+        $stub = $this->replaceColumns($stub, $columns);
+
         return $stub;
     }
+
+
 
     protected function replaceModel($stub, $model)
     {
