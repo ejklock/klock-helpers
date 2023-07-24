@@ -22,11 +22,10 @@ trait LiveWireSortableRows
     {
         return [
             Column::make('Ordenação')
-                ->sortable(true)
                 ->format(function ($value, $column, $row) {
                     if ($row) {
-                        return '<a wire:click="moveUp(\'' . $row->id . '\')" href="#"><i class="fas fa-arrow-up"></i></a>'
-                            . '<a wire:click="moveDown(\'' . $row->id . '\')" href="#"><i class="fas fa-arrow-down"></i></a>';
+                        return '<a style="padding:5px" wire:click="moveUp(\'' . $row->id . '\')" href="#"><i class="fas fa-arrow-up"></i></a>'
+                            . '<a  style="padding:5px" wire:click="moveDown(\'' . $row->id . '\')" href="#"><i class="fas fa-arrow-down"></i></a>';
                     }
 
                     return '';
