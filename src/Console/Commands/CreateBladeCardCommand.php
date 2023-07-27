@@ -4,7 +4,7 @@ namespace KlockTecnologia\KlockHelpers\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-class CreateBladeFormCommand extends GeneratorCommand
+class CreateBladeFormCardCommand extends GeneratorCommand
 {
     /**
      * The console command name.
