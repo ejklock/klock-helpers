@@ -5,6 +5,8 @@ namespace KlockTecnologia\KlockHelpers\Services;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use KlockTecnologia\KlockHelpers\Models\Media;
 
 abstract class AbstractModelService
 {
@@ -64,6 +66,8 @@ abstract class AbstractModelService
     protected function storeOnDisk(Media $media)
     {
         try {
+
+            Storage::disk($this->diskName)->put($media->getGeneratedFileName(), $media->getFilePath());
         } catch (\Throwable $th) {
             throw new \Exception("Erro ao Salvar no Disco: " . $th->getMessage());
         }
