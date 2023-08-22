@@ -10,6 +10,7 @@ class Media
 {
     protected $uploadedFile;
     protected $mediaCollection;
+    protected $property;
     protected $fileName;
     protected $filePath;
     protected $filePrefix;
@@ -17,16 +18,21 @@ class Media
     protected $diskName;
 
 
-    public function __construct(UploadedFile $uploadedFile, String $mediaCollection = null, String $filePrefix = null, String $fileName = null, String $filePath = null)
+    public function __construct(UploadedFile $uploadedFile, String $property = null, String $mediaCollection = null, String $filePrefix = null, String $fileName = null, String $filePath = null)
     {
         $this->uploadedFile = $uploadedFile;
         $this->mediaCollection = $mediaCollection;
         $this->fileName = $fileName;
         $this->filePath = $filePath ?? '';
         $this->filePrefix = $filePrefix;
+        $this->property = $property;
         $this->generateFileName();
     }
 
+    public function getProperty()
+    {
+        return $this->property;
+    }
     protected function generateFilePrefix(): String
     {
 
@@ -53,6 +59,8 @@ class Media
     {
         return $this->uploadedFile->path();
     }
+
+
 
     public function getGeneratedFileName()
     {

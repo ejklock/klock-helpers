@@ -67,7 +67,9 @@ abstract class AbstractModelService
     {
         try {
 
-            Storage::disk($this->diskName)->put($media->getGeneratedFileName(), $media->getFilePath());
+            Storage::disk($this->diskName)->put($media->getGeneratedFileName(), $media->getUploadedFile()->getContent());
+
+            return $media->getGeneratedFileName();
         } catch (\Throwable $th) {
             throw new \Exception("Erro ao Salvar no Disco: " . $th->getMessage());
         }
@@ -77,7 +79,11 @@ abstract class AbstractModelService
     {
         if ($media) {
             if ($this->diskName && !$media->getMediaCollection()) {
-                $this->storeOnDisk($media);
+                $fileName = $this->storeOnDisk($media);
+
+                $propertyName = $media->getProperty();
+
+                $this->model->$propertyName = $fileName;
             } else {;
                 $this->model->addMedia($media->getFilePath())->usingFileName($media->getGeneratedFileName())->toMediaCollection($media->getMediaCollection());
             }
@@ -104,6 +110,8 @@ abstract class AbstractModelService
             $this->handleMedia($media);
             $this->handleAttachModel($attach);
             $this->handleSyncModel($sync);
+
+
             DB::commit();
             return $this->model();
         } catch (\Throwable $th) {
@@ -122,7 +130,9 @@ abstract class AbstractModelService
             $this->handleMedia($media);
             $this->handleAttachModel($attach);
             $this->handleSyncModel($sync);
+
             $this->model->save();
+
             DB::commit();
             return $this->model;
         } catch (\Throwable $th) {
