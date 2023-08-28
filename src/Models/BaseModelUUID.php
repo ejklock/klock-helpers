@@ -17,9 +17,4 @@ class BaseModelUUID extends Model
     {
         return 'id';
     }
-
-    public function getStatusAttribute()
-    {
-        return $this->attributes['status'] ? 'Ativado' : 'Desativado';
-    }
 }
