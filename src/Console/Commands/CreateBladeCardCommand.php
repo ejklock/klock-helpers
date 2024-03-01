@@ -11,7 +11,7 @@ class CreateBladeCardCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'utils:blade-forms';
+    protected $name = 'utils:blade-cards';
 
     /**
      * The console command description.

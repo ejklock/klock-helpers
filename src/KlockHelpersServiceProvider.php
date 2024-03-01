@@ -2,6 +2,7 @@
 
 namespace KlockTecnologia\KlockHelpers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 use KlockTecnologia\KlockHelpers\Console\BaseCommandsGeneratorsServiceProvider;
@@ -23,6 +24,9 @@ class KlockHelpersServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
+
+            DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('klock-helpers.php'),
             ], 'config');
