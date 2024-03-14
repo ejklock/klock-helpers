@@ -2,12 +2,12 @@
 
 namespace KlockTecnologia\KlockHelpers\Models;
 
-use Dyrynda\Database\Support\GeneratesUuid;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseModelUUID extends Model
 {
-    use GeneratesUuid;
+    use HasUuids;
 
     public $timestamps = true;
     public $incrementing = false;
