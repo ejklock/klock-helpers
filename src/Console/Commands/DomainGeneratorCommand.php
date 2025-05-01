@@ -26,6 +26,8 @@ class DomainGeneratorCommand extends GeneratorCommand
      */
     protected $description = 'Create Domain Model/Controller/Migration';
 
+    protected function getStub() {}
+
     public function stub()
     {
         return '';
