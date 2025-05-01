@@ -2,11 +2,10 @@
 
 namespace KlockTecnologia\KlockHelpers\Console\Commands;
 
-use Barryvdh\LaravelIdeHelper\Generator;
-use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use KlockTecnologia\KlockHelpers\Models\BaseModelUUID;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Console\GeneratorCommand;
 
 class DomainGeneratorCommand extends GeneratorCommand
 {
