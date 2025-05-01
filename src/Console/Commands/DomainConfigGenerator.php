@@ -2,35 +2,26 @@
 
 namespace KlockTecnologia\KlockHelpers\Console\Commands;
 
-use Illuminate\Support\Str;
-use KlockTecnologia\KlockHelpers\Models\BaseModelUUID;
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
-class DomainGeneratorCommand extends GeneratorCommand
+
+class DomainConfigGenerator extends GeneratorCommand
 {
-    private $model, $baseNamespace;
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $name = 'domain:make';
+    protected $name = 'domain:config';
 
-    protected $signature = 'domain:make {name} {--dm}';
+    protected $description = 'Create config file on App/Domain/<model>/Config';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create Domain Model/Controller/Migration';
+    protected $type = 'Config';
 
-    protected function getStub() {}
-
-    public function stub()
+    protected function getStub()
     {
-        return '';
+        return __DIR__ . '/../stubs/domain-config.stub';
+    }
+
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return "App\\Domains\\{$this->getCamelName()}\\Config";
     }
 
     protected function getCamelName()
@@ -38,125 +29,52 @@ class DomainGeneratorCommand extends GeneratorCommand
         return ucwords(Str::singular(Str::camel($this->argument('name'))));
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
+    protected function getLowerCaseSingularName()
+    {
+        return Str::lower(Str::singular($this->argument('name')));
+    }
+
     public function handle()
     {
-        $this->option('dm') ? $this->createModel() : $this->createModelFromTable();
-        $this->createController();
-        $this->createService();
-        $this->createConfig();
-        $this->createServiceProvider();
-        $this->createDataTable();
-        $this->createBladeFormUtils();
-        $this->createBladeCardUtils();
+        parent::handle();
     }
 
-    protected function getDomainNamespace()
+    protected function str_lreplace($search, $replace, $subject)
     {
-        return "App\\Domains\\{$this->getCamelName()}\\Models";
-    }
+        $pos = strrpos($subject, $search);
 
-    protected function getOutputPath()
-    {
-        $separator = DIRECTORY_SEPARATOR === '\\' ? DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR : DIRECTORY_SEPARATOR; //Fix Windows
-        return (DIRECTORY_SEPARATOR === '\\' ? '' : '.') .
-            $separator .
-            'Domains' .
-            $separator .
-            $this->getCamelName() .
-            $separator .
-            'Models' .
-            $separator;
-    }
-
-    protected function createModelFromTable()
-    {
-
-        $this->call('krlove:generate:model', [
-            'class-name' => $this->getCamelName(),
-            '--table-name' => $this->argument('name'),
-            '--base-class-name' => BaseModelUUID::class,
-            '--namespace' => $this->getDomainNamespace(),
-            '--output-path' => $this->getOutputPath()
-
-        ]);
-    }
-
-    protected function createModel()
-    {
-        $this->call('domain:model', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-
-    protected function createController()
-    {
-        $this->call('domain:controller', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-
-    protected function createBladeFormUtils()
-    {
-        $this->call('utils:blade-forms', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-    protected function createBladeCardUtils()
-    {
-        $this->call('utils:blade-card', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-
-    protected function createService()
-    {
-        $this->call('domain:service', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-
-    protected function createDataTable()
-    {
-        $this->call('domain:livewire-table', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-    protected function createConfig()
-    {
-        $this->call('domain:config', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-    protected function createServiceProvider()
-    {
-        $this->call('domain:service-provider', [
-            'name' => $this->getCamelName()
-        ]);
-    }
-
-    protected function createMigration()
-    {
-        $table = Str::snake(Str::pluralStudly(class_basename($this->model)));
-
-        if ($this->option('pivot')) {
-            $table = Str::singular($table);
+        if ($pos !== false) {
+            $subject = substr_replace($subject, $replace, $pos, strlen($search));
         }
 
-        $this->call('make:migration', [
-            'name' => "create_{$table}_table",
-            '--create' => $table,
-        ]);
+        return $subject;
     }
 
-    protected function getOptions()
+
+    protected function getPath($name)
     {
-        return [
-            ['dry-model', 'dm', InputOption::VALUE_OPTIONAL, 'Create a new Domain with drymodel (not from table)', null],
-        ];
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $name = $this->str_lreplace($this->getCamelName(), $this->getLowerCaseSingularName(), $name);
+
+        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
+    }
+
+    protected function getNameInput()
+    {
+        return $this->getCamelName();
+    }
+
+    protected function buildClass($name)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
+    }
+
+    protected function replaceClass($stub, $name)
+    {
+        $class = $this->getCamelName();
+
+        return  str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
     }
 }
