@@ -3,6 +3,7 @@
 namespace KlockTecnologia\KlockHelpers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 use KlockTecnologia\KlockHelpers\Console\BaseCommandsGeneratorsServiceProvider;
@@ -24,8 +25,11 @@ class KlockHelpersServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
+            // The following line is causing the error - remove or update it
+            // DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
 
-            DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+            // Instead, Laravel now recommends using native schema methods
+            // If you need to handle 'enum' types, you might need a different approach
 
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('klock-helpers.php'),
@@ -58,7 +62,6 @@ class KlockHelpersServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
         $this->app->register(BaseCommandsGeneratorsServiceProvider::class);
 
         $this->app->register(DomainsServiceProvider::class);
